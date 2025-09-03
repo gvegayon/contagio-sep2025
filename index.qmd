@@ -11,20 +11,52 @@ format:
     revealjs:
         embed-resources: true
         slide-number: c/t
+        scrollable: true
+        footer: George G. Vega Yon, Ph.D. | The University of Utah | <george.vegayon@utah.edu>
+        incremental: true
 fontsize: 200%
 nocite: |
     @valente_yon_2020
 ---
 
+# Mirada general {background-color="#be0000"}
+
+## Distintos Objetivos
+
+Durante esta presentacion, discutiremos los siguientes tipos de modelos:
+
+- **Inferencia**: Modelos mecanisticos desarrollados para realizar inferencia estadistica en algun parametro poblacional, por ejemplo, la tasa de adopcion de una innovacion o la infectividad de un patogeno.
+
+- **Predicción**: Modelos no necesariamente mecanisticos que buscan predecir el comportamiento futuro de la red o de sus actores, por ejemplo, el numero de adopciones en el futuro o la propagación de una enfermedad.
+
+- **Escenarios**: Modelos que ayudan a explorar de manera relativa los efectos de distintas intervenciones/cambios generados en el sistema. Algunos ejemplos incluyen comparar estrategias para combatir un brote de una enfermedad o identificar lideres en un grupo para maximizar la difusión de una innovación.
+
+## Paquetes estadísticos 
+
+Existen varios paquetes disponibles para el análisis de difusión en redes:
+
+::: {style="font-size: 80%"}
+
+| Paquete | Enfoque | Recomendacion |
+|---------|---------|---------------|
+| [**netdiffuseR**](https://cran.r-project.org/package=netdiffuseR) | Inferencia y Escenarios | Modelos de difusion basados en exposicion. Utiliza modelos de regresion rezagada para analizar la propagacion de innovaciones. |
+| [**RSiena**](https://cran.r-project.org/package=RSiena) | Inferencia | Estado el arte para estudiar la co-evolucion de red y comportamiento a traves de los modelos SOAM. |
+| [**EpiModel**](https://cran.r-project.org/package=EpiModel) | Escenarios | Ideado para simular la propagacion de enfermedades infecciosas. Utiliza el paquete ERGM para simular cambios en la red. |
+| [**epiworldR**](https://cran.r-project.org/package=epiworldR) | Escenarios | Similar a EpiModel, pero con un enfoque en poblaciones de mayor tamano y la simulacion de intervenciones de manera dinamica. |
+
+:::
+
+Puedes aprender más en el [*CRAN Task View* de **Network Analysis**](	https://CRAN.R-project.org/view=NetworkAnalysis){target="_blank"} y en el libro ["Ciencia de Redes Aplicada con R"](https://book.ggvy.cl/es/){target="_blank"}.
+
 # Modelos de Difusión {background-color="#be0000"}
 
 ## Modelos de Difusión
 
-- Los modelos de difusion en redes describen como las ideas o comportamientos se propagan a través de una red social.
+- Los modelos de difusión en redes describen cómo las ideas o comportamientos se propagan a través de una red social.
 
 * Uno de los conceptos canónicos es el umbral de red. Los umbrales de red [@valenteNetworkModelsDiffusion1995; @valenteSocialNetworkThresholds1996b], $\tau$, se definen como la proporción requerida o número de vecinos que te llevan a adoptar un comportamiento particular (innovación), $a=1$.
 
-> Para el individuo $i$, el adoptara el comportamiento/innovacion $xyz$ si y solo si $\tau$ porciento de sus pares lo han adoptado. En otras palabras, para que $i$ adopte, al menos $\tau$ porciento de sus vecinos deben haber adoptado $xyz$.
+> Para el individuo $i$, adoptará el comportamiento/innovación $xyz$ si y solo si un $\tau$ por ciento de sus pares lo han adoptado. En otras palabras, para que $i$ adopte, al menos un $\tau$ por ciento de sus vecinos deben haber adoptado $xyz$.
 
 ## {style="font-size: 90%"}
 
@@ -34,36 +66,32 @@ En términos (muy) generales
     
 $$
 a_i = \left\{\begin{array}{ll}
-1 &\text{if } \tau_i\leq E_i \\
-0 & \text{Otherwise}
+1 & \text{si } \tau_i \leq E_i \\
+0 & \text{en otro caso}
 \end{array}\right. \quad
 E_i \equiv \frac{\sum_{j\neq i}\mathbf{X}_{ij}a_j}{\sum_{j\neq i}\mathbf{X}_{ij}}
 $$
     
-Donde $E_i$ es la exposición de i a la innovación y $\mathbf{X}$ es la matriz de adyacencia (la red).
+Donde $E_i$ es la exposición de $i$ a la innovación y $\mathbf{X}$ es la matriz de adyacencia (la red).
 
-Esto puede ser generalizado y extendido para incluir covariables y otros esquemas de ponderación de red.
+Esto puede generalizarse y extenderse para incluir covariables y otros esquemas de ponderación de red.
 
 
 ## Umbrales (Exposición) (Cont.) {style="font-size: 90%"}
 
-Existen varios tipos de exposicion que pueden ser considerados:
+Existen varios tipos de exposición que pueden ser considerados:
 
-- **Exposición cohesiva**: Proporcion o numero de pares que adoptan la innovacion (cohesion).
+- **Exposición cohesiva**: Proporción o número de pares que adoptan la innovación (cohesión).
+- **Exposición homofílica**: Proporción de pares que adoptan la innovación y son similares en características (homofilia). Por ejemplo, proporción de amigos de mi mismo sexo que adoptaron la innovación.
+- **Exposición estructural**: Proporción de individuos que adoptaron y que tienen una posición similar a la mía en la red. Por ejemplo, en el caso de un presidente de partido, proporción de presidentes de partido que adoptaron la innovación.
+- **Exposición basada en centralidad**: Basada en pares; aquellos individuos con mayor grado de centralidad ejercen un mayor impacto en la difusión de la innovación.
 
-- **Exposición homofílica**: Proporción de pares que adoptan la innovación y son similares en características (homofilia). Por ejemplo, proporcion de amigos de mi mismo sexo que adoptaron la innovación.
-
-- **Exposición estructural**: Proporción de individuos que adoptaron que tienen una posicion similar a la mia en la red. Por ejemplo, en el caso de un presidente de partido, proporcion de presidentes de partido que adoptaron la innovación.
-
-- **Exposición en base a centralidad**: Basada en pares, aquellos individuos con mayor grado de centralidad ejercen un mayor impacto en la difusión de la innovación.
-
-Para otros ejemplos, pueden revisar el contenido de el tutorial de [**netdiffuseR** aca](https://usccana.github.io/netdiffuser-workshop/1-theory.html).
+Para otros ejemplos, pueden revisar el contenido del tutorial de [**netdiffuseR** acá](https://usccana.github.io/netdiffuser-workshop/1-theory.html).
 
 ---
 
-- El modelo de Valente es completamente deterministico.
-
-- Esto significa que la adopcion esta dada completamente por la estructura de la red y los umbrales individuales.
+- El modelo de Valente es completamente determinístico.
+- Esto significa que la adopción está dada completamente por la estructura de la red y los umbrales individuales.
 
 ```{mermaid}
 flowchart LR
@@ -72,76 +100,141 @@ flowchart LR
     B -->|"`E(i) < tau(i)`"| D["No adopta a(i)=0"]
 ```
 
-- Sin embargo, el umbral puede ser en si mismo una funcion de otras variables, como por ejemplo, la edad del individuo.
+- Sin embargo, el umbral puede ser en sí mismo una función de otras variables, como por ejemplo, la edad del individuo.
 
 ## Tipos de preguntas que se pueden hacer
 
-Aqui una lista de algunas preguntas que los modelos de difusion pueden ayudar a responder:
+Fundamentalmente dos tipos:
 
-1. **Simulacion de escenarios**. En una intervencion donde se busca reducir el uso del tabaco, ¿quienes serian las *personas optimas* para dirigir la campaña de concientizacion? (key players)
+1. **Simulación de escenarios**. En una intervención donde se busca reducir el uso del tabaco, ¿quiénes serían las *personas óptimas* para dirigir la campaña de concientización? (key players)
+2. **Inferencia**. ¿Qué tipo de exposición fue más importante para la adopción de un comportamiento o innovación?
 
-2. **Inferencia** ¿Que tipo de exposicion fue mas importante para la adopcion de un comportamiento o innovacion?
-
-Varios ejemplos mas en la literatura incluyen: Innovaciones medicas [@Coleman1966; @sargentAssessingDynamicsPrEP2024a]; Metodos anticonceptivos [@rogers_book_1981]; Innovaciones en metodos de cultivo [@rogers1970diffusion]; Uso del cigarrillo en adolecentes [@hayeSmokingDiffusionNetworks2019]; y Políticas de control de tabaco [@valenteNetworkInfluencesPolicy2019]. 
+Varios ejemplos más en la literatura incluyen: Innovaciones médicas [@Coleman1966; @sargentAssessingDynamicsPrEP2024a]; Métodos anticonceptivos [@rogers_book_1981]; Innovaciones en métodos de cultivo [@rogers1970diffusion]; Uso del cigarrillo en adolescentes [@hayeSmokingDiffusionNetworks2019]; y políticas de control de tabaco [@valenteNetworkInfluencesPolicy2019]. 
 
 # Modelos de Transmisión {background-color="#be0000"}
 
-## Modelos de simulacion basados en agentes
+## Modelos de Simulación Basados en Agentes en Epidemiología
 
 - Los modelos de transmisión en epidemiología tienen varios objetivos:
+  a. **Inferencia** estadística de parámetros epidemiológicos.
+  b. **Predicción** de la propagación de enfermedades.
+  c. **Evaluación** de intervenciones de salud pública.
+- Uno de los tipos de modelos más importantes en el área corresponde a los modelos de simulación basados en agentes (ABM por sus siglas en inglés).
+- En los ABM, los individuos son representados como agentes que interactúan entre sí y con su entorno. La interacción puede ser de varias maneras distintas y altamente complejas.
 
-  a. Inferencia estadística de parametros epidemiológicos.
-  b. Predicción de la propagación de enfermedades.
-  c. Evaluación de intervenciones de salud pública.
+## Modelos ABM básicos: SEIR
 
-- Uno de los tipos de models mas importantes en el area corresponden a los modelos de simulacion basados en agentes (ABM por sus siglas en ingles).
-
-- En los ABM, los individuos son representados como agentes que interactúan entre sí y con su entorno. La interaccion puede ser de varias maneras distintas y altamente complejas.
-
-## Modelos ABM basicos: SEIR
-
-- El modelo SEIR (Susceptible-Exposed-Infected-Recovered) es uno de los modelos fundamentales en el area ([wiki](https://es.wikipedia.org/w/index.php?title=Modelos_compartimentales_en_epidemiolog%C3%ADa&oldid=166823427#Modelo_SEIR){target="_blank"}).
+- El modelo SEIR (Susceptible–Expuesto–Infectado–Recuperado) es uno de los modelos fundamentales en el área ([wiki](https://es.wikipedia.org/w/index.php?title=Modelos_compartimentales_en_epidemiolog%C3%ADa&oldid=166823427#Modelo_SEIR){target="_blank"}).
 
 ```{mermaid}
 flowchart LR
-    S[Susceptible] -->|Transmision via contacto| E[Exposed]
-    E -->|Infectious| I[Infected]
-    I -->|Recovery| R[Recovered]
+    S[Susceptible] -->E[Expuesto]
+    E -->I[Infectado]
+    I -->R[Recuperado]
 ```
 
-- Desde el punto de vista de la interaccion, la transicion mas importante es de Susceptible a Expuesto.
+- Desde el punto de vista de la interacción, la transición más importante es de Susceptible a Expuesto.
 
-## Conceptos basicos
+- A diferencia del modelo de difusion, en el modelo SEIR la transmision es probabilistica (no deterministica).
+
+- En relacion a modelos de contagio de comportamiento, el contagio de enfermedades suele llamarse contagio "simple".
+
+## Velocidad de propagación
 
 ::: {.columns}
 
 ::: {.column width="50%"}
 
-- Numero de Reproducción Básico (R0): Numero promedio de casos secundarios en una **población completamente susceptible**.
-
-- Numero de Reproduccion Efectivo (R): Numero promedio de casos secundarios en una **población que no es completamente susceptible**.
-
+- Número de Reproducción Básico (R0): Número promedio de casos secundarios en una **población completamente susceptible**.
+- Número de Reproducción Efectivo (R): Número promedio de casos secundarios en una **población que no es completamente susceptible**.
 - R* > 1 indica que la enfermedad se propaga en la población.
-
-- Immunidad colectiva (de rebaño): $1 - 1/R_0$ (En el caso del sarampión, 1 - 1/15 ~ 0.933)
+- Inmunidad colectiva (de rebaño): $1 - 1/R_0$ (en el caso del sarampión, 1 - 1/15 ~ 0.933)
 
 :::
 
 ::: {.column width="50%"}
-![Numero de Reproducción Básico (R0) para varias enfermedades](fig/herd_immunity.png){width="100%"}
+![Número de Reproducción Básico (R0) para varias enfermedades](fig/herd_immunity.png){width="100%"}
 :::
 
 :::
 
-## Aplicación: Escuelas en Utah
+## Ejemplo de ABM
 
-# Apéndice {.appendix}
+Las siguientes imágenes ilustran dos resultados importantes de un modelo SEIR: las curvas de incidencia y el numero de reproduccion efectivo.
 
-## Bibliografia
+::: {.columns}
+
+::: {.column width="50%"}
+![Curvas de incidencia de un modelo SEIR. Datos simulados utilizando el paquete epiworldR.](fig/seir-conn.png){width="100%"}
+:::
+
+::: {.column width="50%"}
+![Numero de reproduccion efectivo (Rt) de un modelo SEIR. Datos simulados utilizando el paquete epiworldR.](fig/rt.png){width="100%"}
+:::
+
+:::
+
+## Tipos de preguntas que se pueden hacer
+
+- A pesar de que los ABM dan espacio para prediccion de parametros e inferencia estadistica, debido a que corresponden a modelos simplificados de la realidad, son mas adecuados para la evaluacion de intervenciones. Por ejemplo
+
+> En el caso de un brote de sarampión, ¿que es mas efectivo? (vacunación masiva vs. cuarentena). Desde el punto de vista economico, que estrategia es la mas eficiente? (los famosos [QALYs](https://es.wikipedia.org/w/index.php?title=QALY&oldid=149362956){target="_blank"}).
+
+::: {.callout-caution title="Precaucion"}
+Evitar el uso de ABM para la inferencia causal y prediccion es mera opinion del autor. Existe una amplia literatura donde se utilizan los ABMs para estos fines.
+:::
+
+
+
+# Aplicación: Escuelas en Utah {background-color="#be0000"}
+
+## Modelo Implementado {style="font-size: 80%"}
+
+El siguiente diagrama ilustra una version simplificada del modelo de transmisión dentro de las escuelas en Utah. Este modelo fue desarrollado en conjunto con el Departamento de Salud y Servicios Humanos de Utah. Una version interactive del modelo esta en <https://ggv.cl/shiny/measles>:
+
+```{mermaid}
+flowchart TB
+    Susceptible -->|Starts quarantine| QuarantineS["Quarantine<br>Susceptible"]
+    QuarantineS -->|Ends quarantine| Susceptible
+    Susceptible --> Exposed
+
+    Exposed     -->|Starts quarantine| Quarantine["Quarantine<br>or Isolated"]
+    Quarantine  -->|Ends quarantine| Exposed
+    Exposed     -->|Disease progression| Prodromal
+    
+    Prodromal   -->|Starts quarantine| Quarantine
+    Quarantine  -->|Ends quarantine| Prodromal
+    Prodromal   -->|Disease progression| Rash
+    
+    Rash        --> |Starts quarantine| Quarantine
+    Quarantine  --> |Ends quarantine| Rash
+    Rash        --> |Disease progression| Hospitalized
+    Rash        --> |Disease progression| Recovered
+    
+    Quarantine  --> |Disease progression| Hospitalized
+    Hospitalized--> |Disease progression| Recovered
+    Hospitalized--> |Starts quarantine| Quarantine
+    Quarantine  --> |Ends quarantine| Recovered
+```
+
+## Fin {style="font-size: 150%"}
+
+::: {style="text-align: center;"}
+Gracias! 
+
+**Transmision y Contagio en Redes**<br>*Una introduccion breve*
+:::
+
+
+## Bibliografía
 
 ::: {#refs}
 :::
 
+# Apéndice {.appendix background-color="black"}
+
 ## Uso de la IA
 
-El desarrollo de esta presentación fue asistido por inteligencia artificial [IA] utilizando GitHub Copilot. En su totalidad, la IA ayudó a simplificar el proceso pero no reemplazó la generación de contenido original.
+El desarrollo de esta presentación fue asistido por inteligencia artificial (IA) utilizando GitHub Copilot. En su totalidad, la IA ayudó a simplificar el proceso, pero no reemplazó la generación de contenido original.
+## Aplicación: Escuelas en Utah
+

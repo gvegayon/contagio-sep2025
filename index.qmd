@@ -17,19 +17,24 @@ format:
 fontsize: 200%
 nocite: |
     @valente_yon_2020
+    @yonNetdiffuseRAnalysisDiffusion2017
+    @meyerEpiworldRShinyShinyWrapper2024
+    @meyerEpiworldRFastAgentBased2023
+    @ripleyManualRSIENA2011
+    @jennessEpiModelPackageMathematical2018
 ---
 
 # Mirada general {background-color="#be0000"}
 
 ## Distintos Objetivos
 
-Durante esta presentacion, discutiremos los siguientes tipos de modelos:
+Durante esta presentación, discutiremos los siguientes tipos de modelos:
 
-- **Inferencia**: Modelos mecanisticos desarrollados para realizar inferencia estadistica en algun parametro poblacional, por ejemplo, la tasa de adopcion de una innovacion o la infectividad de un patogeno.
+- **Inferencia**: Modelos mecanísticos desarrollados para realizar inferencia estadística en algún parámetro poblacional, por ejemplo, la tasa de adopción de una innovación o la infectividad de un patógeno.
 
-- **Predicción**: Modelos no necesariamente mecanisticos que buscan predecir el comportamiento futuro de la red o de sus actores, por ejemplo, el numero de adopciones en el futuro o la propagación de una enfermedad.
+- **Predicción**: Modelos no necesariamente mecanísticos que buscan predecir el comportamiento futuro de la red o de sus actores, por ejemplo, el número de adopciones en el futuro o la propagación de una enfermedad.
 
-- **Escenarios**: Modelos que ayudan a explorar de manera relativa los efectos de distintas intervenciones/cambios generados en el sistema. Algunos ejemplos incluyen comparar estrategias para combatir un brote de una enfermedad o identificar lideres en un grupo para maximizar la difusión de una innovación.
+- **Escenarios**: Modelos que ayudan a explorar de manera relativa los efectos de distintas intervenciones/cambios generados en el sistema. Algunos ejemplos incluyen comparar estrategias para combatir un brote de una enfermedad o identificar líderes en un grupo para maximizar la difusión de una innovación.
 
 ## Paquetes estadísticos 
 
@@ -37,12 +42,12 @@ Existen varios paquetes disponibles para el análisis de difusión en redes:
 
 ::: {style="font-size: 80%"}
 
-| Paquete | Enfoque | Recomendacion |
+| Paquete | Enfoque | Recomendación |
 |---------|---------|---------------|
-| [**netdiffuseR**](https://cran.r-project.org/package=netdiffuseR) | Inferencia y Escenarios | Modelos de difusion basados en exposicion. Utiliza modelos de regresion rezagada para analizar la propagacion de innovaciones. |
-| [**RSiena**](https://cran.r-project.org/package=RSiena) | Inferencia | Estado el arte para estudiar la co-evolucion de red y comportamiento a traves de los modelos SOAM. |
-| [**EpiModel**](https://cran.r-project.org/package=EpiModel) | Escenarios | Ideado para simular la propagacion de enfermedades infecciosas. Utiliza el paquete ERGM para simular cambios en la red. |
-| [**epiworldR**](https://cran.r-project.org/package=epiworldR) | Escenarios | Similar a EpiModel, pero con un enfoque en poblaciones de mayor tamano y la simulacion de intervenciones de manera dinamica. |
+| [**netdiffuseR**](https://cran.r-project.org/package=netdiffuseR) | Inferencia y Escenarios | Modelos de difusión basados en exposición. Utiliza modelos de regresión rezagada para analizar la propagación de innovaciones. |
+| [**RSiena**](https://cran.r-project.org/package=RSiena) | Inferencia | Estado del arte para estudiar la coevolución de red y comportamiento a través de los modelos SOAM. |
+| [**EpiModel**](https://cran.r-project.org/package=EpiModel) | Escenarios | Ideado para simular la propagación de enfermedades infecciosas. Utiliza el paquete ERGM para simular cambios en la red. |
+| [**epiworldR**](https://cran.r-project.org/package=epiworldR) | Escenarios | Similar a EpiModel, pero con un enfoque en poblaciones de mayor tamaño y la simulación de intervenciones de manera dinámica. |
 
 :::
 
@@ -111,6 +116,24 @@ Fundamentalmente dos tipos:
 
 Varios ejemplos más en la literatura incluyen: Innovaciones médicas [@Coleman1966; @sargentAssessingDynamicsPrEP2024a]; Métodos anticonceptivos [@rogers_book_1981]; Innovaciones en métodos de cultivo [@rogers1970diffusion]; Uso del cigarrillo en adolescentes [@hayeSmokingDiffusionNetworks2019]; y políticas de control de tabaco [@valenteNetworkInfluencesPolicy2019]. 
 
+## Proceso de investigación en modelos de difusión
+
+::: {style="font-size: 80%"}
+
+1. Definir claramente **la pregunta** (inferencia vs predicción vs simulación).
+
+2. Revisar la **literatura existente** y los modelos previos. **Que software** puede ayudar en el analisis?
+
+3. Dependiendo de la pregunta:
+    
+    a. *Inferencia*: Definir el modelo estadístico, estimarlo y evaluar la bondad de ajuste.
+    b. *Predicción*: Puede que el modelo no tenga un componente teórico fuerte, pero **requiere información histórica** para su evaluación.
+    c. *Simulación*: Si se tienen datos, se puede **calibrar el modelo** de simulación para replicar patrones observados. Sin embargo, no es del todo necesario (pero pierde validez externa).
+
+4. Interpretar los resultados e *identificar limitaciones* (validez interna y externa) y posibles direcciones futuras de investigación.
+
+:::
+
 # Modelos de Transmisión {background-color="#be0000"}
 
 ## Modelos de Simulación Basados en Agentes en Epidemiología
@@ -135,9 +158,16 @@ flowchart LR
 
 - Desde el punto de vista de la interacción, la transición más importante es de Susceptible a Expuesto.
 
-- A diferencia del modelo de difusion, en el modelo SEIR la transmision es probabilistica (no deterministica).
+- A diferencia del modelo de difusión, en el modelo SEIR la transmisión es probabilística (no determinística).
+- En relación con modelos de contagio de comportamiento, el contagio de enfermedades suele llamarse contagio "simple".
 
-- En relacion a modelos de contagio de comportamiento, el contagio de enfermedades suele llamarse contagio "simple".
+## Dinámica de la propagación
+
+Existen distintas maneras de representar el contacto entre los agentes
+
+::: {style="text-align: center"}
+![En el extremo izquierdo, se encuentra el modelo compartimental clásico. En el extremo derecho, se encuentra un ABM altamente complejo con agentes moviéndose en distintos ambientes. Fuente: @colizzaEpidemicModelingComplex2007](fig/mixing-abms.jpg){width="90%"}
+:::
 
 ## Velocidad de propagación
 
@@ -160,7 +190,7 @@ flowchart LR
 
 ## Ejemplo de ABM
 
-Las siguientes imágenes ilustran dos resultados importantes de un modelo SEIR: las curvas de incidencia y el numero de reproduccion efectivo.
+Las siguientes imágenes ilustran dos resultados importantes de un modelo SEIR: las curvas de incidencia y el número de reproducción efectivo.
 
 ::: {.columns}
 
@@ -169,28 +199,90 @@ Las siguientes imágenes ilustran dos resultados importantes de un modelo SEIR: 
 :::
 
 ::: {.column width="50%"}
-![Numero de reproduccion efectivo (Rt) de un modelo SEIR. Datos simulados utilizando el paquete epiworldR.](fig/rt.png){width="100%"}
+![Número de reproducción efectivo (Rt) de un modelo SEIR. Datos simulados utilizando el paquete epiworldR.](fig/rt.png){width="100%"}
 :::
 
 :::
 
 ## Tipos de preguntas que se pueden hacer
 
-- A pesar de que los ABM dan espacio para prediccion de parametros e inferencia estadistica, debido a que corresponden a modelos simplificados de la realidad, son mas adecuados para la evaluacion de intervenciones. Por ejemplo
+- A pesar de que los ABM dan espacio para predicción de parámetros e inferencia estadística, debido a que corresponden a modelos simplificados de la realidad, son más adecuados para la evaluación de intervenciones. Por ejemplo:
 
-> En el caso de un brote de sarampión, ¿que es mas efectivo? (vacunación masiva vs. cuarentena). Desde el punto de vista economico, que estrategia es la mas eficiente? (los famosos [QALYs](https://es.wikipedia.org/w/index.php?title=QALY&oldid=149362956){target="_blank"}).
+> En el caso de un brote de sarampión, ¿qué es más efectivo? (vacunación masiva vs. cuarentena). Desde el punto de vista económico, ¿qué estrategia es la más eficiente? (los famosos [QALYs](https://es.wikipedia.org/w/index.php?title=QALY&oldid=149362956){target="_blank"}).
 
-::: {.callout-caution title="Precaucion"}
-Evitar el uso de ABM para la inferencia causal y prediccion es mera opinion del autor. Existe una amplia literatura donde se utilizan los ABMs para estos fines.
+::: {.callout-caution title="Precaución"}
+Evitar el uso de ABM para la inferencia causal y predicción es mera opinión del autor. Existe una amplia literatura donde se utilizan los ABM para estos fines.
 :::
 
+## Consideraciones en modelos de transmisión
 
+::: {style="font-size: 80%"}
+1. **Red o no red**: Si es un sistema reducido, un modelo de red es ideal. Sin embargo, para sistemas más grandes (una ciudad, por ejemplo), modelos de mezcla homogénea pueden ser más apropiados.[^redmala]
+
+[^redmala]: Algunos modelos de red tienden a generar valores R cercanos a 1, lo que va en contra de la intuición sobre la propagación de enfermedades. (vea esta [presentacion](https://uofuepibio.github.io/abm-networks-epi/#/title-slide) y @huangEndogenousCompetitionUnderrealized2025).
+
+2. **Calibración**: Lo ideal es calibrar el modelo en base al R0. Si no existe dicha información, el modelo se puede calibrar utilizando datos observados (por ejemplo, número de casos o hospitalizaciones).
+
+3. **Validez**: Como dijo George E. P. Box, "todos los modelos están equivocados, pero algunos son útiles" ([wiki](https://es.wikipedia.org/w/index.php?title=George_Edward_Pelham_Box&oldid=168787295){target="_blank"}).
+
+4. **Transparencia**: Es importante que los supuestos y limitaciones del modelo sean claramente comunicados a los interesados.
+
+Más sobre cómo calibrar ABM en @toniApproximateBayesianComputation2008; @gozzi2022preliminary; @platt2020comparison; @lampertiAgentbasedModelCalibration2018; @jalalBayCANNStreamliningBayesian2021 y @zhang2020validation.
+:::
 
 # Aplicación: Escuelas en Utah {background-color="#be0000"}
 
-## Modelo Implementado {style="font-size: 80%"}
+## Sarampión en EEUU
 
-El siguiente diagrama ilustra una version simplificada del modelo de transmisión dentro de las escuelas en Utah. Este modelo fue desarrollado en conjunto con el Departamento de Salud y Servicios Humanos de Utah. Una version interactive del modelo esta en <https://ggv.cl/shiny/measles>:
+::: {.columns style="font-size: 85%"}
+
+::: {.column width="50%"}
+
+- EEUU ha experimentado un resurgimiento significativo en el número de casos de sarampión (1408 al 26 de agosto de 2025 según @cdcespanolCasosBrotesSarampion2025).
+
+- El Departamento de Salud del estado de Utah y la Universidad de Utah, desarrollaron un ABM para entender mejor la propagación del sarampión en las escuelas.
+
+- El modelo basado en un SEIR ha sido utilizado ampliamente por epidemiólogos del estado de Utah para informar discusiones con legisladores y responsables de políticas.
+:::
+
+::: {.column width="50%"}
+![Casos de Sarampión en EEUU (fuente: @cdcespanolCasosBrotesSarampion2025)](fig/measles.png){width="100%"}
+:::
+:::
+
+## Modelo implementado
+
+El modelo implementado es un ABM de las siguientes características:
+
+- **Tiempo discreto**: Los estados de los agentes se actualizan de manera diaria.
+
+- **Mezcla homogénea**: No es un modelo de red per se, pues los agentes interactúan de manera aleatoria.
+
+- **Implementa cuarentenas**: Si un caso es detectado, se implementa una cuarentena para reducir la propagación.
+
+- **R0 calibrado dentro de una única escuela**: La tasa de contacto entre los agentes se calibró asumiendo que las transmisiones ocurren solo dentro de la escuela.
+
+---
+
+La app está disponible en <https://ggv.cl/shiny/measles>
+
+:::{style="text-align: center;"}
+![](fig/epiworldrshiny.png){width="70%"}
+:::
+
+## Aprendizaje
+
+- **Urgencia**: El desarrollo de la app tomó cerca de un mes. Lo que requirió tener un objetivo claro y factible.
+
+- **Colaboración**: La colaboración con el Departamento de Salud y Servicios Humanos de Utah fue crucial para el desarrollo del modelo y la app.
+
+- **Iteración rápida**: Se realizaron múltiples ciclos de prueba y ajuste para mejorar la precisión y usabilidad del modelo.
+
+- **Complejidad vs. simplicidad**: Encontrar el equilibrio adecuado entre un modelo lo suficientemente complejo como para ser realista, pero lo suficientemente simple como para ser comprensible y utilizable, fue un desafío constante.
+
+## Modelo Implementado: diagrama {style="font-size: 80%"}
+
+El siguiente diagrama ilustra una versión simplificada del modelo de transmisión dentro de las escuelas en Utah. Este modelo fue desarrollado en conjunto con el Departamento de Salud y Servicios Humanos de Utah. Una versión interactiva del modelo está en <https://ggv.cl/shiny/measles>:
 
 ```{mermaid}
 flowchart TB
@@ -217,12 +309,28 @@ flowchart TB
     Quarantine  --> |Ends quarantine| Recovered
 ```
 
+## Conclusiones
+
+::: {style="font-size: 80%"}
+
+- En general, los modelos de contagio en redes sociales están orientados a comportamientos.
+- Los modelos de transmisión de enfermedades infecciosas suelen denominarse modelos de contagio simple, pues se asume que el comportamiento no influye mayormente en el resultado final.
+- Sin embargo, la transmisión de enfermedades infecciosas puede verse afectada por factores sociales y de comportamiento (por lo que no es tan simple).
+- Existen distintos modelos de contagio que se enfocan en distintas componentes; diferenciándose principalmente en los supuestos.
+- Si la red es dinámica, los SOAM y modelos como EpiModel pueden ser más apropiados. Si la red es estática, ABM más simples y modelos como el implementado en netdiffuseR pueden ser suficientes.
+- Los ABM son una herramienta poderosa para comparar escenarios. También pueden ser utilizados para hacer inferencia y predicción, pero requieren de una cuidadosa calibración y validación.
+- En la salud pública, muchas veces se necesitan modelos más simples (por ejemplo, mezcla homogénea) para poder realizar análisis rápidos y efectivos.
+:::
+
 ## Fin {style="font-size: 150%"}
 
 ::: {style="text-align: center;"}
 Gracias! 
 
-**Transmision y Contagio en Redes**<br>*Una introduccion breve*
+**Transmisión y Contagio en Redes**<br>*Una introducción breve*
+
+George G. Vega Yon, Ph.D.\
+The University of Utah
 :::
 
 
@@ -235,6 +343,8 @@ Gracias!
 
 ## Uso de la IA
 
+El desarrollo de esta presentación fue asistido por inteligencia artificial (IA) utilizando GitHub Copilot. En su totalidad, la IA ayudó a simplificar el proceso, pero no reemplazó la generación de contenido original.
+## Aplicación: Escuelas en Utah
 El desarrollo de esta presentación fue asistido por inteligencia artificial (IA) utilizando GitHub Copilot. En su totalidad, la IA ayudó a simplificar el proceso, pero no reemplazó la generación de contenido original.
 ## Aplicación: Escuelas en Utah
 

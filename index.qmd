@@ -1,0 +1,147 @@
+---
+title: Transmisión y Contagio en Redes
+subtitle: Una introducción breve
+author: 
+  - name: George G. Vega Yon, Ph.D.
+    affiliation: The University of Utah
+    email: george.vegayon@utah.edu
+date: 2025-09-03
+bibliography: references.bib
+format:
+    revealjs:
+        embed-resources: true
+        slide-number: c/t
+fontsize: 200%
+nocite: |
+    @valente_yon_2020
+---
+
+# Modelos de Difusión {background-color="#be0000"}
+
+## Modelos de Difusión
+
+- Los modelos de difusion en redes describen como las ideas o comportamientos se propagan a través de una red social.
+
+* Uno de los conceptos canónicos es el umbral de red. Los umbrales de red [@valenteNetworkModelsDiffusion1995; @valenteSocialNetworkThresholds1996b], $\tau$, se definen como la proporción requerida o número de vecinos que te llevan a adoptar un comportamiento particular (innovación), $a=1$.
+
+> Para el individuo $i$, el adoptara el comportamiento/innovacion $xyz$ si y solo si $\tau$ porciento de sus pares lo han adoptado. En otras palabras, para que $i$ adopte, al menos $\tau$ porciento de sus vecinos deben haber adoptado $xyz$.
+
+## {style="font-size: 90%"}
+
+![Diagrama por Dr. Valente](fig/slides-indirect-expo.png){width="50%"}
+
+En términos (muy) generales
+    
+$$
+a_i = \left\{\begin{array}{ll}
+1 &\text{if } \tau_i\leq E_i \\
+0 & \text{Otherwise}
+\end{array}\right. \quad
+E_i \equiv \frac{\sum_{j\neq i}\mathbf{X}_{ij}a_j}{\sum_{j\neq i}\mathbf{X}_{ij}}
+$$
+    
+Donde $E_i$ es la exposición de i a la innovación y $\mathbf{X}$ es la matriz de adyacencia (la red).
+
+Esto puede ser generalizado y extendido para incluir covariables y otros esquemas de ponderación de red.
+
+
+## Umbrales (Exposición) (Cont.) {style="font-size: 90%"}
+
+Existen varios tipos de exposicion que pueden ser considerados:
+
+- **Exposición cohesiva**: Proporcion o numero de pares que adoptan la innovacion (cohesion).
+
+- **Exposición homofílica**: Proporción de pares que adoptan la innovación y son similares en características (homofilia). Por ejemplo, proporcion de amigos de mi mismo sexo que adoptaron la innovación.
+
+- **Exposición estructural**: Proporción de individuos que adoptaron que tienen una posicion similar a la mia en la red. Por ejemplo, en el caso de un presidente de partido, proporcion de presidentes de partido que adoptaron la innovación.
+
+- **Exposición en base a centralidad**: Basada en pares, aquellos individuos con mayor grado de centralidad ejercen un mayor impacto en la difusión de la innovación.
+
+Para otros ejemplos, pueden revisar el contenido de el tutorial de [**netdiffuseR** aca](https://usccana.github.io/netdiffuser-workshop/1-theory.html).
+
+---
+
+- El modelo de Valente es completamente deterministico.
+
+- Esto significa que la adopcion esta dada completamente por la estructura de la red y los umbrales individuales.
+
+```{mermaid}
+flowchart LR
+    A[Individuo i] -->|Vecino j adopta| B{"Exposición E(i)"}
+    B -->|"`E(i) >= tau(i)`"| C["Adopta a(i)=1"]
+    B -->|"`E(i) < tau(i)`"| D["No adopta a(i)=0"]
+```
+
+- Sin embargo, el umbral puede ser en si mismo una funcion de otras variables, como por ejemplo, la edad del individuo.
+
+## Tipos de preguntas que se pueden hacer
+
+Aqui una lista de algunas preguntas que los modelos de difusion pueden ayudar a responder:
+
+1. **Simulacion de escenarios**. En una intervencion donde se busca reducir el uso del tabaco, ¿quienes serian las *personas optimas* para dirigir la campaña de concientizacion? (key players)
+
+2. **Inferencia** ¿Que tipo de exposicion fue mas importante para la adopcion de un comportamiento o innovacion?
+
+Varios ejemplos mas en la literatura incluyen: Innovaciones medicas [@Coleman1966; @sargentAssessingDynamicsPrEP2024a]; Metodos anticonceptivos [@rogers_book_1981]; Innovaciones en metodos de cultivo [@rogers1970diffusion]; Uso del cigarrillo en adolecentes [@hayeSmokingDiffusionNetworks2019]; y Políticas de control de tabaco [@valenteNetworkInfluencesPolicy2019]. 
+
+# Modelos de Transmisión {background-color="#be0000"}
+
+## Modelos de simulacion basados en agentes
+
+- Los modelos de transmisión en epidemiología tienen varios objetivos:
+
+  a. Inferencia estadística de parametros epidemiológicos.
+  b. Predicción de la propagación de enfermedades.
+  c. Evaluación de intervenciones de salud pública.
+
+- Uno de los tipos de models mas importantes en el area corresponden a los modelos de simulacion basados en agentes (ABM por sus siglas en ingles).
+
+- En los ABM, los individuos son representados como agentes que interactúan entre sí y con su entorno. La interaccion puede ser de varias maneras distintas y altamente complejas.
+
+## Modelos ABM basicos: SEIR
+
+- El modelo SEIR (Susceptible-Exposed-Infected-Recovered) es uno de los modelos fundamentales en el area ([wiki](https://es.wikipedia.org/w/index.php?title=Modelos_compartimentales_en_epidemiolog%C3%ADa&oldid=166823427#Modelo_SEIR){target="_blank"}).
+
+```{mermaid}
+flowchart LR
+    S[Susceptible] -->|Transmision via contacto| E[Exposed]
+    E -->|Infectious| I[Infected]
+    I -->|Recovery| R[Recovered]
+```
+
+- Desde el punto de vista de la interaccion, la transicion mas importante es de Susceptible a Expuesto.
+
+## Conceptos basicos
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+- Numero de Reproducción Básico (R0): Numero promedio de casos secundarios en una **población completamente susceptible**.
+
+- Numero de Reproduccion Efectivo (R): Numero promedio de casos secundarios en una **población que no es completamente susceptible**.
+
+- R* > 1 indica que la enfermedad se propaga en la población.
+
+- Immunidad colectiva (de rebaño): $1 - 1/R_0$ (En el caso del sarampión, 1 - 1/15 ~ 0.933)
+
+:::
+
+::: {.column width="50%"}
+![Numero de Reproducción Básico (R0) para varias enfermedades](fig/herd_immunity.png){width="100%"}
+:::
+
+:::
+
+## Aplicación: Escuelas en Utah
+
+# Apéndice {.appendix}
+
+## Bibliografia
+
+::: {#refs}
+:::
+
+## Uso de la IA
+
+El desarrollo de esta presentación fue asistido por inteligencia artificial [IA] utilizando GitHub Copilot. En su totalidad, la IA ayudó a simplificar el proceso pero no reemplazó la generación de contenido original.

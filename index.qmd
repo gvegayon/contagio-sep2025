@@ -12,8 +12,10 @@ format:
         embed-resources: true
         slide-number: c/t
         scrollable: true
-        footer: George G. Vega Yon, Ph.D. | The University of Utah | <george.vegayon@utah.edu>
+        footer: George G. Vega Yon, Ph.D. | The University of Utah | <george.vegayon@utah.edu> | ggv.cl/slides/contagio-sep2025
         incremental: true
+        language: es
+        lang: es
 fontsize: 200%
 nocite: |
     @valente_yon_2020
@@ -35,6 +37,24 @@ Durante esta presentación, discutiremos los siguientes tipos de modelos:
 - **Predicción**: Modelos no necesariamente mecanísticos que buscan predecir el comportamiento futuro de la red o de sus actores, por ejemplo, el número de adopciones en el futuro o la propagación de una enfermedad.
 
 - **Escenarios**: Modelos que ayudan a explorar de manera relativa los efectos de distintas intervenciones/cambios generados en el sistema. Algunos ejemplos incluyen comparar estrategias para combatir un brote de una enfermedad o identificar líderes en un grupo para maximizar la difusión de una innovación.
+
+## Redes y Agentes
+
+::: {style="font-size: 85%"}
+
+| Fenómeno | Agente   | Red       |
+|----------|----------|-----------|
+| Enfermedad Venérea | Patógenos | Red Sexual |
+| Propagación de Rumores | Información, Memes | Red de Comunicación |
+| Difusión de Innovaciones | Ideas, Conocimiento | Red de Comunicación |
+| Virus Informáticos | Malware, Virus Digitales | Internet |
+| Virus de Teléfono Móvil | Virus Móviles | Red Social/Red de Proximidad |
+| Chinches de Cama | Insectos Parasitarios | Red Hotel - Viajero |
+| Malaria | Plasmodium | Red Mosquito - Humano |
+
+Table: Tabla 10.1 del libro "Network Science" por Albert-László Barabási [@barabasiNetworkScience2016] {#tbl-redes-y-agentes}
+:::
+
 
 ## Paquetes estadísticos 
 
